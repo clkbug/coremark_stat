@@ -13,16 +13,23 @@ library(plotly)
 
 ```{r}
 f <- function(filename) {
-    read_csv(filename, col_names = c("value", "unit", "title")) %>%
+  read_tsv(filename,
+           col_names = c("value", "unit", "title"),
+           skip = 2) %>%
     select(value, title) %>%
     mutate(value = value %>% str_replace("<not supported>", "NA") %>% as.numeric()) %>%
-    mutate(title = title %>% str_replace_all("-", "_")) %>%
+    mutate(title = title %>% str_replace_all("-", "_") %>% str_replace_all(":u", "")) %>%
     pivot_wider(names_from = "title", values_from = "value") %>%
-    mutate(filename = filename, board = basename(filename) %>% str_replace("perf_", "") %>% str_replace("\\.csv", ""))
+    mutate(
+      filename = filename,
+      board = dirname(filename) %>% basename,
+      iter = str_extract(filename, "\\.(\\d)\\.") %>% str_replace_all("\\.", "") %>% as.numeric()
+    )
 }
 
-d <- f("perf_raspi4.csv") %>% mutate(iterations = 110000) %>% union_all(f("perf_raspi5.csv") %>% mutate(iterations = 300000))
-d$board <- d$board %>% as_factor
+d <- list.files(path = c("./raspi4", "./raspi5"), pattern = "*\\.tsv", full.names = TRUE) %>% map(f) %>% reduce(union_all)
+d$iterations <- if_else(d$board == "raspi4", 110000, 300000)
+d$board <- d$board %>% as_factor()
 ```
 
 ## データの書き出し
@@ -39,7 +46,7 @@ d %>%
 d %>%
   ggplot(mapping = aes(x = board, y = instructions / cycles)) +
   theme_bw() +
-  geom_bar(stat = "identity") +
+  geom_boxplot() +
   scale_y_continuous(
     limits = c(0, 3),
     breaks = c(0, 1, 2, 3),
@@ -59,16 +66,12 @@ d %>%
 d %>%
   ggplot(mapping = aes(x = board, y = branch_misses / instructions * 1000)) +
   theme_bw() +
-  geom_bar(stat = "identity") +
+  geom_boxplot() +
   scale_y_continuous(
-    # limits = c(0, 3),
-    # breaks = c(0, 1, 2, 3),
-    # minor_breaks = 0:30 / 5
-  ) +
-  geom_text(mapping = aes(
-    y = branch_misses / instructions * 1000 + 0.2,
-    label = sprintf("%.1f", branch_misses / instructions * 1000)
-  ))
+    limits = c(0, 3),
+    breaks = c(0, 1, 2, 3),
+    minor_breaks = 0:30 / 5
+  )
 ```
 
 ### 分岐予測ヒット率
@@ -78,16 +81,12 @@ d %>%
 d %>%
   ggplot(mapping = aes(x = board, y = 100 - branch_misses / branches * 100)) +
   theme_bw() +
-  geom_bar(stat = "identity") +
+  geom_boxplot() +
   scale_y_continuous(
-    # limits = c(0, 3),
+    # limits = c(0, 100),
     # breaks = c(0, 1, 2, 3),
     # minor_breaks = 0:30 / 5
-  ) +
-  geom_text(mapping = aes(
-    y = 100 - branch_misses / branches * 100 + 2,
-    label = sprintf("%.2f", 100 - branch_misses / branches * 100)
-  ))
+  )
 ```
 
 
