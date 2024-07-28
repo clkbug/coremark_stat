@@ -1,0 +1,20 @@
+12788.36,msec,task-clock,12788364575,100.00,0.999,CPUs utilized
+353,,context-switches,12788364575,100.00,27.603,/sec
+0,,cpu-migrations,12788364575,100.00,0.000,/sec
+49,,page-faults,12788364575,100.00,3.832,/sec
+22878315601,,cycles,9941465107,77.00,1.789,GHz
+37431992388,,instructions,9942939861,77.00,1.64,insn per cycle
+<not supported>,,branches,0,100.00,,
+111453746,,branch-misses,9947479441,77.00,,
+8481410615,,L1-dcache-loads,9950087750,77.00,663.213,M/sec
+361487,,L1-dcache-load-misses,9950218437,77.00,0.00,of all L1-dcache accesses
+<not supported>,,LLC-loads,0,100.00,,
+<not supported>,,LLC-load-misses,0,100.00,,
+14786253241,,L1-icache-loads,9950004296,77.00,1.156,G/sec
+760742,,L1-icache-load-misses,9946498606,77.00,0.01,of all L1-icache accesses
+<not supported>,,dTLB-loads,0,100.00,,
+24658013,,dTLB-load-misses,8522061818,66.00,,
+<not supported>,,iTLB-loads,0,100.00,,
+15000,,iTLB-load-misses,8520897241,66.00,,
+<not supported>,,L1-dcache-prefetches,0,100.00,,
+<not supported>,,L1-dcache-prefetch-misses,0,100.00,,

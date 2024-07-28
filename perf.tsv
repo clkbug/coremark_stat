@@ -1,0 +1,3 @@
+task_clock	context_switches	cpu_migrations	page_faults	cycles	instructions	branches	branch_misses	L1_dcache_loads	L1_dcache_load_misses	LLC_loads	LLC_load_misses	L1_icache_loads	L1_icache_load_misses	dTLB_loads	dTLB_load_misses	iTLB_loads	iTLB_load_misses	L1_dcache_prefetches	L1_dcache_prefetch_misses	filename	board	iterations
+12788.36	353	0	49	22878315601	37431992388	NA	111453746	8481410615	361487	NA	NA	14786253241	760742	NA	24658013	NA	15000	NA	NA	perf_raspi4.csv	raspi4	110000
+22728.3	35	0	36	54450096671	126982832038	28472889939	86637978	28428782006	144254	50124	1819	36991286290	671971	28431375677	132703	29064707092	1220	NA	NA	perf_raspi5.csv	raspi5	300000
